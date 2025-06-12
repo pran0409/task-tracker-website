@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task Tracker</title>
     <!-- Favicon for the browser tab -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMyIgeT0iNSIgd2lkdGg9IjE4IiBoZWlnaHQ9IjE0IiByeD0iMiIgcnk9IjIiIGZpbGw9IiM2MzY2RDAiLz4KPHBhdGggZD0iTTEwIDlMMjEgMy41TTIzIDkuNUwyMSA2IiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik03IDEzTDEyIDE4TDE3IDEzIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjwvYXN2Zz4=">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMyIgeT0iNSI gud2lkdGg9IjE4IiBoZWlnaHQ9IjE0IiByeD0iMiIgcnk9IjIiIGZpbGw9IiM2MzY2RDAiLz4KPHBhdGggZD0iTTEwIDlMMjEgMy41TTIzIDkuNUwyMSA2IiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik03IDEzTDEyIDE4TDE3IDEzIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjwvYXN2Zz4=">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -55,7 +55,7 @@
         }
         .modal-content {
             /* Force modal background to black and text to light gray regardless of body's dark mode */
-            background-color: #000000; /* Always black for the modal background */
+            background-color: rgb(31,41,55); /* Always black for the modal background */
             color: #d1d5db; /* Light gray text for contrast */
             padding: 2rem;
             border-radius: 0.75rem;
@@ -477,6 +477,15 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(payload)
                     });
+
+                    if (!response.ok) {
+                        // If the HTTP response status is not 2xx
+                        const errorData = await response.json().catch(() => ({ message: 'No JSON response' }));
+                        showCustomModal(`API Error: ${response.status} ${response.statusText}. Please try again.`, false);
+                        console.error('Gemini API HTTP Error:', response.status, response.statusText, errorData);
+                        return; // Exit the function
+                    }
+
                     const result = await response.json();
 
                     if (result.candidates && result.candidates.length > 0 &&
@@ -486,12 +495,14 @@
                         // Display the generated text in the modal
                         showCustomModal(`Elaboration for: "${taskText}"`, false, convertMarkdownToHtml(generatedText));
                     } else {
-                        showCustomModal('Failed to elaborate on the task. Please try again.', false);
+                        // If API call was successful but response structure is unexpected
+                        showCustomModal('Failed to elaborate on the task. Unexpected response from AI. Please try again.', false);
                         console.error('Gemini API response structure unexpected:', result);
                     }
                 } catch (error) {
-                    showCustomModal('An error occurred while connecting to Gemini API. Please try again.', false);
-                    console.error('Error calling Gemini API:', error);
+                    // Catch network errors or issues with response.json() parsing
+                    showCustomModal('An error occurred while connecting to or processing response from AI. Please check your internet connection and try again.', false);
+                    console.error('Error during Gemini API call:', error);
                 }
             }
 
