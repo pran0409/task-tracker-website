@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task Tracker</title>
     <!-- Favicon for the browser tab -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMyIgeT0iNSIgd2lkdGg9IjE4IiBoZWlnaHQ9IjE0IiByeD0iMiIgcnk9IjIiIGZpbGw9IiM2MzY2RDAiLz4KPHBhdGggZD0iTTEwIDlMMjEgMy41TTIzIDkuNUwyMSA2IiBzdHJva2U9IiNGRkZGRkYiIHN0cm9va2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8cGF0aCBkPSJNNyAxM0wxMiAxOEwxNyAxMyIgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4=">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMyIgeT0iNSIgd2lkdGg9IjE4IiBoZWlnaHQ9IjE0IiByeD0iMiIgcnk9IjIiIGZpbGw9IiM2MzY2RDAiLz4KPHBhdGggZD0iTTEwIDlMMjEgMy41TTIzIDkuNUwyMSA2IiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik03IDEzTDEyIDE4TDE3IDEzIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjwvYXN2Zz4=">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -54,8 +54,9 @@
             opacity: 1;
         }
         .modal-content {
-
-            background-color: rgb(31, 41, 55); /* Default for light mode */
+            /* Force modal background to black and text to light gray regardless of body's dark mode */
+            background-color: #000000; /* Always black for the modal background */
+            color: #d1d5db; /* Light gray text for contrast */
             padding: 2rem;
             border-radius: 0.75rem;
             box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
@@ -71,11 +72,23 @@
         .modal-overlay.active .modal-content {
             transform: scale(1);
         }
-        /* Change modal content background to a contrasting dark gray */
-        .dark .modal-content {
-            background-color: #000000; /* Changed to black for dark mode */
-            color: #d1d5db; /* Gray-200 for dark mode text */
+        /* Specific overrides for text within modal content, making sure it's always light */
+        .modal-content p,
+        .modal-content h1,
+        .modal-content h2,
+        .modal-content h3,
+        .modal-content h4,
+        .modal-content strong,
+        .modal-content ul,
+        .modal-content ol,
+        .modal-content li {
+            color: #e2e8f0; /* Even lighter gray for primary text within the black modal */
         }
+        .modal-content .prose {
+             color: #e2e8f0; /* Apply to prose content as well */
+        }
+
+
         .modal-buttons {
             display: flex;
             justify-content: center;
@@ -107,12 +120,13 @@
             color: #ef4444; /* Red-500 on hover */
             background-color: rgba(255, 255, 255, 0.1); /* Slight background on hover */
         }
+        /* No need for .dark .modal-close-btn specific overrides as modal background is now always dark */
         .dark .modal-close-btn {
-            color: #9ca3af; /* Gray-400 for dark mode */
+             color: #9ca3af;
         }
         .dark .modal-close-btn:hover {
-            color: #ef4444; /* Red-500 on hover */
-            background-color: rgba(255, 255, 255, 0.1); /* Slight background on hover */
+            color: #ef4444;
+            background-color: rgba(255, 255, 255, 0.1);
         }
 
 
@@ -183,9 +197,9 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
-            <p id="modal-message" class="text-lg font-medium text-gray-900 dark:text-gray-200 mb-4"></p>
+            <p id="modal-message" class="text-lg font-medium mb-4"></p>
             <div id="modal-loading-spinner" class="loading-spinner hidden"></div>
-            <div id="modal-response-content" class="text-gray-700 dark:text-gray-300 mt-4 prose dark:prose-invert" style="max-width: none;">
+            <div id="modal-response-content" class="mt-4 prose dark:prose-invert" style="max-width: none;">
                 <!-- LLM response content will be inserted here -->
             </div>
             <div class="modal-buttons">
@@ -323,7 +337,7 @@
                         ${elaborateButtonHtml}
                         <button class="delete-task-btn bg-red-500 hover:bg-red-600 text-white text-sm p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 absolute top-2 right-2" title="Delete Task">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 011-1h4a1 1 0 110 2H8a1 1 0 01-1-1zm1 4a1 1 0 100 2h4a1 1 0 100-2H8z" clip-rule="evenodd" />
+                                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 011-1h4a1 1 0 110 2H8a1 1 0 01-1-1zm1 4a1 100 2h4a1 1 0 100-2H8z" clip-rule="evenodd" />
                             </svg>
                         </button>
                     </div>
