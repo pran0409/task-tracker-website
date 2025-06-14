@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task Tracker</title>
     <!-- Favicon for the browser tab -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMyIgeT0iNSI gd2lkdGg9IjE4IiBoZWlnaHQ9IjE0IiByeD0iMiIgcnk9IjIiIGZpbGw9IiM2MzY2RDAiLz4KPHBhdGggZD0iTTEwIDlMMjEgMy41TTIzIDkuNUwyMSA2IiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik03IDEzTDEyIDE4TDE3IDEzIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJyb3VuZCIgc3Ryb2tlLWxpbmVqam9pbiA9InJvdW5kIi8+CjwvYXN2Zz4=">
+    <link rel="icon" type="image/png" href="favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -54,25 +54,24 @@
             opacity: 1;
         }
         .modal-content {
-            /* Force modal background to black and text to light gray regardless of body's dark mode */
             background-color: rgb(31,41,55); /* Always black for the modal background */
             color: #d1d5db; /* Light gray text for contrast */
             padding: 2rem;
             border-radius: 0.75rem;
             box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-            max-width: 600px; /* Increased max-width for LLM response */
+            max-width: 700px; /* Increased max-width for games */
             width: 90%;
             text-align: left; /* Align text left for better readability of LLM response */
             transform: scale(0.95);
             transition: transform 0.3s ease-out;
-            max-height: 80vh; /* Limit height for scrollability */
+            max-height: 90vh; /* Limit height for scrollability */
             overflow-y: auto; /* Enable scrolling for long content */
             position: relative; /* Needed for absolute positioning of close button */
         }
         .modal-overlay.active .modal-content {
             transform: scale(1);
         }
-        /* Specific overrides for text within modal content, making sure it's always light */
+        /* Specific overrides for text within modal content, making missing it's always light */
         .modal-content p,
         .modal-content h1,
         .modal-content h2,
@@ -87,7 +86,6 @@
         .modal-content .prose {
              color: #e2e8f0; /* Apply to prose content as well */
         }
-
 
         .modal-buttons {
             display: flex;
@@ -120,7 +118,6 @@
             color: #ef4444; /* Red-500 on hover */
             background-color: rgba(255, 255, 255, 0.1); /* Slight background on hover */
         }
-        /* No need for .dark .modal-close-btn specific overrides as modal background is now always dark */
         .dark .modal-close-btn {
              color: #9ca3af;
         }
@@ -129,10 +126,74 @@
             background-color: rgba(255, 255, 255, 0.1);
         }
 
-
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+
+        /* Game specific styles */
+        #tic-tac-toe-board {
+            display: grid;
+            grid-template-columns: repeat(3, 80px);
+            grid-template-rows: repeat(3, 80px);
+            gap: 5px;
+            width: 255px;
+            height: 255px;
+            margin: 20px auto;
+            background-color: #4b5563; /* Gray-600 */
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid #6b7280; /* Gray-500 */
+        }
+        .tic-tac-toe-cell {
+            width: 80px;
+            height: 80px;
+            background-color: #374151; /* Gray-700 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3em;
+            font-weight: bold;
+            cursor: pointer;
+            color: #d1d5db; /* Light gray */
+            border-radius: 5px;
+            transition: background-color 0.2s ease;
+        }
+        .tic-tac-toe-cell:hover {
+            background-color: #4ade80; /* Green-400 */
+        }
+        .tic-tac-toe-cell.x { color: #ef4444; } /* Red-500 */
+        .tic-tac-toe-cell.o { color: #3b82f6; } /* Blue-500 */
+        .game-canvas {
+            background-color: #1f2937; /* Dark Gray */
+            display: block;
+            margin: 20px auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 2px solid #4b5563; /* Gray-600 */
+        }
+        .game-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .game-message {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #e2e8f0;
+        }
+        .game-score {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 1.1em;
+            color: #9ca3af;
+        }
+        /* For the animated dino */
+        #dinosaurCanvas {
+            overflow: hidden; /* Hide anything drawn outside the canvas */
         }
     </style>
 </head>
@@ -146,19 +207,25 @@
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="kanban-board">
             <div id="todo" class="bg-white dark:bg-gray-800 rounded-xl shadow-lg">
-                <h2 class="text-xl font-semibold p-4 border-b-2 border-red-500 text-gray-700 dark:text-gray-200">To Do</h2>
+                <h2 class="text-xl font-semibold p-4 border-b-2 border-red-500 text-gray-700 dark:text-gray-200 flex justify-between items-center">
+                    To Do
+                </h2>
                 <div class="p-4 space-y-4 column" data-status="todo">
                 </div>
             </div>
 
             <div id="inprogress" class="bg-white dark:bg-gray-800 rounded-xl shadow-lg">
-                <h2 class="text-xl font-semibold p-4 border-b-2 border-yellow-500 text-gray-700 dark:text-gray-200">In Progress</h2>
+                <h2 class="text-xl font-semibold p-4 border-b-2 border-yellow-500 text-gray-700 dark:text-gray-200 flex justify-between items-center">
+                    In Progress
+                </h2>
                 <div class="p-4 space-y-4 column" data-status="inprogress">
                 </div>
             </div>
 
             <div id="done" class="bg-white dark:bg-gray-800 rounded-xl shadow-lg">
-                <h2 class="text-xl font-semibold p-4 border-b-2 border-green-500 text-gray-700 dark:text-gray-200">Done</h2>
+                <h2 class="text-xl font-semibold p-4 border-b-2 border-green-500 text-gray-700 dark:text-gray-200 flex justify-between items-center">
+                    Done
+                </h2>
                 <div class="p-4 space-y-4 column" data-status="done">
                 </div>
             </div>
@@ -189,7 +256,7 @@
 
     <canvas id="confetti-canvas" class="confetti-canvas"></canvas>
 
-    <!-- Custom Modal for Alerts, Confirmations, and LLM Responses -->
+    <!-- Custom Modal for Alerts, Confirmations, and Game Selection -->
     <div id="custom-modal-overlay" class="modal-overlay">
         <div class="modal-content">
             <button id="modal-close-btn" class="modal-close-btn" title="Close">
@@ -200,7 +267,7 @@
             <p id="modal-message" class="text-lg font-medium mb-4"></p>
             <div id="modal-loading-spinner" class="loading-spinner hidden"></div>
             <div id="modal-response-content" class="mt-4 prose dark:prose-invert" style="max-width: none;">
-                <!-- LLM response content will be inserted here -->
+                <!-- Content will be simple text or game HTML -->
             </div>
             <div class="modal-buttons">
                 <button id="modal-confirm-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 shadow-md" style="display: none;">Confirm</button>
@@ -212,6 +279,15 @@
 
 
     <script>
+        // --- Local Storage Key (moved to outer scope for global access) ---
+        const LOCAL_STORAGE_KEY = 'kanbanTasks';
+
+        // --- Game Variables (moved to outer scope for global access) ---
+        let activeGameAnimationFrame = null; // For Dinosaur game animation frame
+        let activeGameInterval = null; // For Snake game update intervals
+        let gameCleanupFunctions = []; // Array to store cleanup functions for each game
+
+
         document.addEventListener('DOMContentLoaded', () => {
             // Get references to DOM elements
             const addTaskBtn = document.getElementById('add-task-btn');
@@ -222,7 +298,7 @@
             const columns = document.querySelectorAll('.column');
             let draggedTask = null;
 
-            // Modal elements
+            // Modal elements (defined inside DOMContentLoaded as they are specific to the DOM)
             const customModalOverlay = document.getElementById('custom-modal-overlay');
             const modalMessage = document.getElementById('modal-message');
             const modalLoadingSpinner = document.getElementById('modal-loading-spinner');
@@ -232,21 +308,46 @@
             const modalOkBtn = document.getElementById('modal-ok-btn');
             const modalCloseBtn = document.getElementById('modal-close-btn');
 
-            // --- Local Storage Keys ---
-            const LOCAL_STORAGE_KEY = 'kanbanTasks';
+            /**
+             * Cleans up any active game by stopping its animation frame/interval and resetting modal content.
+             */
+            function cleanupActiveGame() {
+                console.log("cleanupActiveGame called.");
+                if (activeGameAnimationFrame) {
+                    cancelAnimationFrame(activeGameAnimationFrame);
+                    activeGameAnimationFrame = null;
+                    console.log("Dinosaur game animation frame cancelled.");
+                }
+                if (activeGameInterval) {
+                    clearInterval(activeGameInterval);
+                    activeGameInterval = null;
+                    console.log("Snake game interval cleared.");
+                }
+                gameCleanupFunctions.forEach(func => {
+                    console.log("Running game cleanup function.");
+                    func(); // Run any game-specific cleanup
+                });
+                gameCleanupFunctions = []; // Clear the array
+                modalResponseContent.innerHTML = ''; // Clear game content
+                console.log("Game cleanup complete.");
+            }
 
             /**
              * Displays a custom modal message.
              * @param {string} message - The message to display.
-             * @param {boolean} isConfirmation - True if it's a confirmation, false for a simple alert.
+             * @param {boolean} isConfirmation - True if it's a confirmation (shows Confirm/Cancel), false for a simple alert (shows OK).
              * @param {string} contentHtml - Optional HTML content to display below the message.
              * @param {boolean} showLoading - True to show a loading spinner.
-             * @returns {Promise<boolean>} - Resolves with true for confirm, false for cancel/OK.
+             * @returns {Promise<boolean>} - Resolves with true for confirm/ok, false for cancel/close. For content modals, resolves immediately to allow listener attachment.
              */
             function showCustomModal(message, isConfirmation = false, contentHtml = '', showLoading = false) {
+                console.log("showCustomModal called with message:", message, "isConfirmation:", isConfirmation, "contentHtml present:", contentHtml.length > 0);
                 return new Promise((resolve) => {
+                    // Always cleanup previous game before showing new modal content
+                    cleanupActiveGame();
+
                     modalMessage.textContent = message;
-                    modalResponseContent.innerHTML = contentHtml;
+                    modalResponseContent.innerHTML = contentHtml; // Set the HTML content
 
                     // Reset button states
                     modalConfirmBtn.style.display = 'none';
@@ -259,14 +360,13 @@
                         modalLoadingSpinner.classList.remove('hidden');
                         modalResponseContent.classList.add('hidden'); // Hide content while loading
                         modalCloseBtn.style.display = 'none'; // Hide close button while loading
-                        // No confirm/cancel/ok buttons when loading
                     } else {
                         modalLoadingSpinner.classList.add('hidden');
                         modalResponseContent.classList.remove('hidden'); // Show content if not loading
                         modalCloseBtn.style.display = 'inline-block'; // Ensure close button is visible
 
-                        // Set up buttons based on type
-                        if (isConfirmation) {
+                        // Set up buttons based on type of modal
+                        if (isConfirmation) { // Standard confirmation (Yes/No)
                             modalConfirmBtn.style.display = 'inline-block';
                             modalCancelBtn.style.display = 'inline-block';
                             modalConfirmBtn.onclick = () => {
@@ -277,22 +377,42 @@
                                 customModalOverlay.classList.remove('active');
                                 resolve(false);
                             };
-                        } else {
+                        } else if (contentHtml === '') { // Simple alert with no extra content (just an OK button)
                             modalOkBtn.style.display = 'inline-block';
                             modalOkBtn.onclick = () => {
                                 customModalOverlay.classList.remove('active');
                                 resolve(true);
                             };
                         }
+                        // If it's a content modal (contentHtml is not empty and not a confirmation), no specific buttons are shown
+                        // and the promise will be resolved immediately below.
                     }
 
-                    // Add event listener for the new close button
-                    modalCloseBtn.onclick = () => {
+                    // Remove previous listener from close button to prevent duplicates
+                    // and then add the new one.
+                    const existingCloseHandler = modalCloseBtn.onclick;
+                    if (existingCloseHandler) {
+                         modalCloseBtn.removeEventListener('click', existingCloseHandler); // Not ideal if it's set via .onclick directly
+                         modalCloseBtn.onclick = null; // Clear it to be safe
+                    }
+
+                    const currentCloseHandler = () => {
+                        console.log("Modal close (X) button clicked.");
                         customModalOverlay.classList.remove('active');
+                        cleanupActiveGame(); // Ensure game is cleaned up on close
                         resolve(false); // Treat closing with 'X' as a cancellation for consistency
                     };
+                    modalCloseBtn.addEventListener('click', currentCloseHandler, { once: true }); // Use addEventListener with { once: true } for robustness
 
                     customModalOverlay.classList.add('active');
+                    console.log("Modal activated.");
+
+                    // If it's a content modal (not confirmation, and has content), resolve the promise immediately.
+                    // This allows the caller (e.g., showGameSelection) to attach listeners to the newly added HTML.
+                    if (!isConfirmation && contentHtml !== '') {
+                        resolve(true); // Resolve the promise once the content is set and modal shown
+                        console.log("Promise resolved for content-only modal.");
+                    }
                 });
             }
 
@@ -321,23 +441,13 @@
                 task.setAttribute('data-id', taskId);
                 task.setAttribute('data-status', status); // Store status on the element
 
-                let elaborateButtonHtml = '';
-                // Only add the elaborate button if the task is NOT in the 'done' status
-                if (status !== 'done') {
-                    elaborateButtonHtml = `
-                        <button class="elaborate-task-btn bg-purple-600 hover:bg-purple-700 text-white text-sm font-bold py-1 px-3 rounded-lg transition duration-200 shadow-md">
-                            ✨ Elaborate Task
-                        </button>
-                    `;
-                }
-
+                // Corrected SVG path for delete button (fixed arc flag error)
                 task.innerHTML = `
                     <p class="text-gray-800 dark:text-gray-200 mb-2">${taskText}</p>
                     <div class="flex flex-col sm:flex-row gap-2">
-                        ${elaborateButtonHtml}
                         <button class="delete-task-btn bg-red-500 hover:bg-red-600 text-white text-sm p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 absolute top-2 right-2" title="Delete Task">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 011-1h4a1 1 0 110 2H8a1 1 0 01-1-1zm1 4a1 100 2h4a1 1 0 100-2H8z" clip-rule="evenodd" />
+                                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 011-1h4a1 1 0 110 2H8a1 1 0 01-1-1zm1 4a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" clip-rule="evenodd" />
                             </svg>
                         </button>
                     </div>
@@ -383,10 +493,6 @@
                 newTaskInput.focus(); // Auto-focus the input field
                 addDragEventsToTask(taskElement);
                 addDeleteEventToTask(taskElement);
-                // Only add elaborate event if the status is not 'done'
-                if (selectedStatus !== 'done') {
-                    addElaborateEventToTask(taskElement);
-                }
                 saveTasks(); // Save tasks after adding
             }
 
@@ -394,6 +500,7 @@
             addTaskBtn.addEventListener('click', () => addTask(null, null));
             newTaskInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
+                    e.preventDefault(); // Prevent default form submission if any
                     addTask(null, null);
                 }
             });
@@ -440,109 +547,6 @@
                 }
             }
 
-            // --- Gemini API Integration: Elaborate Task ---
-            /**
-             * Adds a click event listener to the "Elaborate Task" button.
-             * @param {HTMLElement} task - The task element containing the button.
-             */
-            function addElaborateEventToTask(task) {
-                const elaborateButton = task.querySelector('.elaborate-task-btn');
-                if (elaborateButton) {
-                    elaborateButton.addEventListener('click', async (e) => {
-                        e.stopPropagation(); // Prevent dragstart if clicking elaborate button
-                        const taskText = task.querySelector('p').textContent;
-                        await elaborateTaskWithGemini(taskText);
-                    });
-                }
-            }
-
-            /**
-             * Calls the Gemini API to elaborate on a given task.
-             * @param {string} taskText - The text of the task to elaborate.
-             */
-            async function elaborateTaskWithGemini(taskText) {
-                showCustomModal('Generating task breakdown...', false, '', true); // Show loading spinner
-
-                try {
-                    const prompt = `Given the task: "${taskText}", please provide a detailed breakdown into actionable sub-tasks, including suggested steps, key considerations, and potential tools or resources. Format your response clearly using Markdown (e.g., bullet points for sub-tasks, bold for important terms).`;
-                    
-                    let chatHistory = [];
-                    chatHistory.push({ role: "user", parts: [{ text: prompt }] });
-                    const payload = { contents: chatHistory };
-                    const apiKey = ""; // Keep this empty; Canvas will inject
-                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
-                    const response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-
-                    if (!response.ok) {
-                        // If the HTTP response status is not 2xx
-                        const errorData = await response.json().catch(() => ({ message: 'No JSON response' }));
-                        showCustomModal(`API Error: ${response.status} ${response.statusText}. Please try again.`, false);
-                        console.error('Gemini API HTTP Error:', response.status, response.statusText, errorData);
-                        return; // Exit the function
-                    }
-
-                    const result = await response.json();
-
-                    if (result.candidates && result.candidates.length > 0 &&
-                        result.candidates[0].content && result.candidates[0].content.parts &&
-                        result.candidates[0].content.parts.length > 0) {
-                        const generatedText = result.candidates[0].content.parts[0].text;
-                        // Display the generated text in the modal
-                        showCustomModal(`Elaboration for: "${taskText}"`, false, convertMarkdownToHtml(generatedText));
-                    } else {
-                        // If API call was successful but response structure is unexpected
-                        showCustomModal('Failed to elaborate on the task. Unexpected response from AI. Please try again.', false);
-                        console.error('Gemini API response structure unexpected:', result);
-                    }
-                } catch (error) {
-                    // Catch network errors or issues with response.json() parsing
-                    showCustomModal('An error occurred while connecting to or processing response from AI. Please check your internet connection and try again.', false);
-                    console.error('Error during Gemini API call:', error);
-                }
-            }
-
-            /**
-             * Basic Markdown to HTML converter. This is a simplified version and may not support all Markdown.
-             * It primarily handles lists, bold text, and newlines.
-             * @param {string} markdownText - The Markdown string to convert.
-             * @returns {string} The HTML string.
-             */
-            function convertMarkdownToHtml(markdownText) {
-                let html = markdownText;
-
-                // Convert bold text (**text** or __text__)
-                html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-                html = html.replace(/__(.*?)__/g, '<strong>$1</strong>');
-
-                // Convert headings (simple # for h3, ## for h4, etc.)
-                html = html.replace(/^### (.*$)/gim, '<h4>$1</h4>');
-                html = html.replace(/^## (.*$)/gim, '<h3>$1</h3>');
-                html = html.replace(/^# (.*$)/gim, '<h2>$1</h2>');
-
-                // Convert unordered lists (* item or - item)
-                html = html.replace(/^\s*[\*\-]\s+(.*)$/gim, '<li>$1</li>');
-                if (html.includes('<li>')) {
-                    html = `<ul>${html}</ul>`;
-                }
-                 // Convert ordered lists (1. item)
-                html = html.replace(/^\s*\d+\.\s+(.*)$/gim, '<li>$1</li>');
-                if (html.includes('<li>') && !html.includes('<ul>')) { // Only if it's an ordered list and not already an unordered list
-                    html = `<ol>${html}</ol>`;
-                }
-
-                // Handle newlines as paragraphs for remaining text not in lists/headings
-                // This replaces multiple newlines with a single <p> tag, preserving <br> for single newlines within text
-                html = html.split('\n\n').map(paragraph => `<p>${paragraph.replace(/\n/g, '<br>')}</p>`).join('');
-
-                return html;
-            }
-
-
             // Event listeners for drag and drop on columns
             columns.forEach(column => {
                 column.addEventListener('dragover', e => {
@@ -573,25 +577,10 @@
                     draggedTask.classList.add(getBorderColorClass(status));
                     draggedTask.setAttribute('data-status', status); // Update the task's data-status
 
-                    // Remove/Add Elaborate Task button based on status change
-                    const elaborateButton = draggedTask.querySelector('.elaborate-task-btn');
-                    if (status === 'done' && elaborateButton) {
-                        elaborateButton.remove(); // Remove if moved to 'done'
-                    } else if (status !== 'done' && !elaborateButton) {
-                        // Re-create and add the button if moved OUT of 'done'
-                        // Need to re-create the whole button structure and then attach the event
-                        const taskText = draggedTask.querySelector('p').textContent;
-                        const tempTask = createTaskElement(taskText, status, draggedTask.dataset.id);
-                        const newElaborateButton = tempTask.querySelector('.elaborate-task-btn');
-                        if (newElaborateButton) {
-                            draggedTask.querySelector('.flex').prepend(newElaborateButton);
-                            addElaborateEventToTask(newElaborateButton.closest('.task')); // Add event to parent task
-                        }
-                    }
-
                     // Trigger confetti if task is moved to "Done"
                     if (status === 'done' && oldStatus !== 'done') { // Only trigger if it just became done
                         triggerConfetti();
+                        promptMiniGamePlay(); // Ask the user if they want to play a mini-game
                     }
                     saveTasks(); // Save tasks after dropping
                 });
@@ -612,8 +601,6 @@
                     const box = child.getBoundingClientRect(); // Get the size and position of the child element
                     // Calculate the offset from the middle of the child element to the mouse's Y
                     const offset = y - box.top - box.height / 2;
-                    // If the offset is negative (mouse is above the middle of the child)
-                    // and it's closer to zero than the current closest offset, then this is the new closest element
                     if (offset < 0 && offset > closest.offset) {
                         return { offset: offset, element: child };
                     } else {
@@ -639,18 +626,23 @@
                     });
                 });
                 localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(tasks));
+                console.log("Tasks saved to local storage.");
             }
 
             /**
              * Loads tasks from local storage and renders them on the board.
              */
             function loadTasks() {
+                console.log("Attempting to load tasks from local storage.");
                 const savedTasks = localStorage.getItem(LOCAL_STORAGE_KEY);
                 if (savedTasks) {
                     const tasks = JSON.parse(savedTasks);
                     tasks.forEach(task => {
                         addTask(task.text, task.status, task.id); // Pass task.text and task.status for loading
                     });
+                    console.log(`Loaded ${tasks.length} tasks.`);
+                } else {
+                    console.log("No tasks found in local storage.");
                 }
             }
 
@@ -668,6 +660,7 @@
              * Triggers a confetti animation on the screen.
              */
             function triggerConfetti() {
+                console.log("Confetti triggered!");
                 // Set canvas dimensions to match the window
                 confettiCanvas.width = window.innerWidth;
                 confettiCanvas.height = window.innerHeight;
@@ -740,6 +733,793 @@
                 confettiCanvas.width = window.innerWidth;
                 confettiCanvas.height = window.innerHeight;
             });
+
+            // --- Mini-Game Integration Logic ---
+            async function promptMiniGamePlay() {
+                console.log("promptMiniGamePlay called.");
+                const play = await showCustomModal('Task completed! 🎉 Do you want to play a mini-game?', true); // This is a confirmation, awaits user input
+                if (play) {
+                    console.log("User chose to play. Displaying game mode selection.");
+                    await showGameModeSelection(); // First select mode (Player vs Player / Player vs Computer)
+                } else {
+                    console.log("User chose not to play mini-game.");
+                }
+            }
+
+            async function showGameModeSelection() {
+                console.log("showGameModeSelection called.");
+                const modeSelectionHtml = `
+                    <div class="flex flex-col gap-4 items-center">
+                        <button id="playerVsPlayerBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 shadow-md w-60">Player vs. Player (Tic-Tac-Toe)</button>
+                        <button id="playerVsComputerBtn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 shadow-md w-60">Player vs. Computer (Tic-Tac-Toe)</button>
+                        <button id="snakeGameModeBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 shadow-md w-60">Snake Game</button>
+                        <button id="dinosaurGameModeBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 shadow-md w-60">Dinosaur Game</button>
+                    </div>
+                `;
+
+                // Display the mode selection. This showCustomModal call should resolve immediately.
+                await showCustomModal('Choose game mode or game:', false, modeSelectionHtml);
+
+                console.log("Game mode selection modal content is in DOM. Attaching button listeners.");
+                const playerVsPlayerBtn = document.getElementById('playerVsPlayerBtn');
+                const playerVsComputerBtn = document.getElementById('playerVsComputerBtn');
+                const snakeGameModeBtn = document.getElementById('snakeGameModeBtn');
+                const dinosaurGameModeBtn = document.getElementById('dinosaurGameModeBtn');
+
+                if (playerVsPlayerBtn) {
+                    playerVsPlayerBtn.addEventListener('click', () => initTicTacToeGame(modalResponseContent, showCustomModal, cleanupActiveGame, false, ''));
+                    console.log("Player vs. Player button listener attached.");
+                } else { console.error("Player vs. Player button NOT found!"); }
+
+                if (playerVsComputerBtn) {
+                    playerVsComputerBtn.addEventListener('click', showDifficultySelection);
+                    console.log("Player vs. Computer button listener attached.");
+                } else { console.error("Player vs. Computer button NOT found!"); }
+                
+                if (snakeGameModeBtn) {
+                    snakeGameModeBtn.addEventListener('click', () => initSnakeGame(modalResponseContent, showCustomModal, cleanupActiveGame));
+                    console.log("Snake Game mode button listener attached.");
+                } else { console.error("Snake Game mode button NOT found!"); }
+
+                if (dinosaurGameModeBtn) {
+                    dinosaurGameModeBtn.addEventListener('click', () => initDinosaurGame(modalResponseContent, showCustomModal, cleanupActiveGame));
+                    console.log("Dinosaur Game mode button listener attached.");
+                } else { console.error("Dinosaur Game mode button NOT found!"); }
+            }
+
+            async function showDifficultySelection() {
+                console.log("showDifficultySelection called.");
+                const difficultyHtml = `
+                    <div class="flex flex-col gap-4 items-center">
+                        <button id="easyAIBtn" class="bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 shadow-md w-48">Easy AI</button>
+                        <button id="smartAIBtn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 shadow-md w-48">Smart AI</button>
+                    </div>
+                `;
+                await showCustomModal('Select AI Difficulty:', false, difficultyHtml);
+
+                console.log("Difficulty selection modal content is in DOM. Attaching button listeners.");
+                const easyAIBtn = document.getElementById('easyAIBtn');
+                const smartAIBtn = document.getElementById('smartAIBtn');
+
+                if (easyAIBtn) {
+                    easyAIBtn.addEventListener('click', () => initTicTacToeGame(modalResponseContent, showCustomModal, cleanupActiveGame, true, 'easy'));
+                    console.log("Easy AI button listener attached.");
+                } else { console.error("Easy AI button NOT found!"); }
+
+                if (smartAIBtn) {
+                    smartAIBtn.addEventListener('click', () => initTicTacToeGame(modalResponseContent, showCustomModal, cleanupActiveGame, true, 'smart')); // Corrected: using cleanupActiveGame
+                    console.log("Smart AI button listener attached.");
+                } else { console.error("Smart AI button NOT found!"); }
+            }
+
+            // --- Tic-Tac-Toe Game ---
+            function initTicTacToeGame(container, showModalCallback, cleanupGameCallback, isVsComputer, difficulty) {
+                console.log(`Initializing Tic-Tac-Toe Game. Vs Computer: ${isVsComputer}, Difficulty: ${difficulty}`);
+                cleanupGameCallback(); // Ensure any previous game is cleaned up
+                container.innerHTML = `
+                    <h3 class="text-xl font-bold text-center mb-4">Tic-Tac-Toe</h3>
+                    <div id="tic-tac-toe-board">
+                        <div class="tic-tac-toe-cell" data-cell-index="0"></div>
+                        <div class="tic-tac-toe-cell" data-cell-index="1"></div>
+                        <div class="tic-tac-toe-cell" data-cell-index="2"></div>
+                        <div class="tic-tac-toe-cell" data-cell-index="3"></div>
+                        <div class="tic-tac-toe-cell" data-cell-index="4"></div>
+                        <div class="tic-tac-toe-cell" data-cell-index="5"></div>
+                        <div class="tic-tac-toe-cell" data-cell-index="6"></div>
+                        <div class="tic-tac-toe-cell" data-cell-index="7"></div>
+                        <div class="tic-tac-toe-cell" data-cell-index="8"></div>
+                    </div>
+                    <p id="tic-tac-toe-message" class="game-message">Player X's turn</p>
+                    <div class="game-controls">
+                        <button id="ticTacToeResetBtn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 shadow-md">Reset Game</button>
+                        <button id="ticTacToeCloseBtn" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 shadow-md">Close Game</button>
+                    </div>
+                `;
+
+                const cells = container.querySelectorAll('.tic-tac-toe-cell');
+                const messageElement = container.querySelector('#tic-tac-toe-message');
+                const resetButton = container.querySelector('#ticTacToeResetBtn');
+                const closeButton = container.querySelector('#ticTacToeCloseBtn');
+
+                let board = ['', '', '', '', '', '', '', '', ''];
+                let currentPlayer = 'X';
+                let gameActive = true;
+                const AI_PLAYER = 'O'; // Computer always plays as 'O'
+
+                const winConditions = [
+                    [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+                    [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+                    [0, 4, 8], [2, 4, 6]             // Diagonals
+                ];
+
+                function handleCellClick(e) {
+                    console.log("Tic-Tac-Toe cell clicked by human player.");
+                    const clickedCell = e.target;
+                    const clickedCellIndex = parseInt(clickedCell.dataset.cellIndex);
+
+                    if (board[clickedCellIndex] !== '' || !gameActive) {
+                        return;
+                    }
+
+                    board[clickedCellIndex] = currentPlayer;
+                    clickedCell.textContent = currentPlayer;
+                    clickedCell.classList.add(currentPlayer.toLowerCase()); // Add class for styling
+
+                    checkResult();
+
+                    if (gameActive && isVsComputer && currentPlayer === 'X') { // If against computer and it's AI's turn
+                        setTimeout(makeComputerMove, 500); // Small delay for AI move
+                    }
+                }
+
+                function makeComputerMove() {
+                    console.log("Computer is making a move (difficulty: " + difficulty + ").");
+                    let move = -1;
+                    const availableMoves = board.map((cell, index) => cell === '' ? index : -1).filter(index => index !== -1);
+                    console.log("Available moves for AI:", availableMoves);
+
+                    if (availableMoves.length === 0) {
+                        console.log("No available moves for AI. Game must be over.");
+                        return; // No moves left
+                    }
+
+                    if (difficulty === 'easy') {
+                        // Easy AI: Random move
+                        move = availableMoves[Math.floor(Math.random() * availableMoves.length)];
+                        console.log("Easy AI chose random move:", move);
+                    } else { // 'smart' AI
+                        // Smart AI: Prioritize winning, blocking, then strategic positions
+
+                        // 1. Check for immediate winning move for AI
+                        for (let i = 0; i < availableMoves.length; i++) {
+                            const currentMove = availableMoves[i];
+                            const tempBoard = [...board];
+                            tempBoard[currentMove] = AI_PLAYER;
+                            if (checkWin(tempBoard, AI_PLAYER, winConditions)) {
+                                move = currentMove;
+                                console.log(`Smart AI: Found winning move for AI at ${move}`);
+                                break;
+                            }
+                        }
+
+                        // 2. Check for immediate blocking move for opponent
+                        if (move === -1) { // Only if no winning move found for AI
+                            for (let i = 0; i < availableMoves.length; i++) {
+                                const currentMove = availableMoves[i];
+                                const tempBoard = [...board];
+                                tempBoard[currentMove] = 'X'; // Opponent's symbol
+                                if (checkWin(tempBoard, 'X', winConditions)) {
+                                    move = currentMove;
+                                    console.log(`Smart AI: Found blocking move for opponent at ${move}`);
+                                    break;
+                                }
+                            }
+                        }
+
+                        // 3. Take strategic positions if no immediate win/block
+                        if (move === -1) {
+                            // Try to take center
+                            if (board[4] === '') {
+                                move = 4;
+                                console.log("Smart AI: Taking center (4)");
+                            } else {
+                                // Try to take a corner
+                                const corners = [0, 2, 6, 8];
+                                const availableCorners = corners.filter(c => board[c] === '');
+                                if (availableCorners.length > 0) {
+                                    move = availableCorners[Math.floor(Math.random() * availableCorners.length)];
+                                    console.log("Smart AI: Taking a random available corner:", move);
+                                } else {
+                                    // Take any available side
+                                    const sides = [1, 3, 5, 7];
+                                    const availableSides = sides.filter(s => board[s] === '');
+                                    if (availableSides.length > 0) {
+                                        move = availableSides[Math.floor(Math.random() * availableSides.length)];
+                                        console.log("Smart AI: Taking a random available side:", move);
+                                    } else {
+                                        // Fallback to any random available move if all strategic positions are taken or blocked
+                                        move = availableMoves[Math.floor(Math.random() * availableMoves.length)];
+                                        console.log("Smart AI: Falling back to random available move:", move);
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if (move !== -1) {
+                        board[move] = AI_PLAYER;
+                        cells[move].textContent = AI_PLAYER;
+                        cells[move].classList.add(AI_PLAYER.toLowerCase());
+                        checkResult();
+                    } else {
+                        console.error("AI failed to find a move, but availableMoves was not empty!", availableMoves);
+                    }
+                }
+
+                function checkWin(currentBoard, playerSymbol, winCons) {
+                    for (let i = 0; i < winCons.length; i++) {
+                        const [a, b, c] = winCons[i];
+                        if (currentBoard[a] === playerSymbol &&
+                            currentBoard[b] === playerSymbol &&
+                            currentBoard[c] === playerSymbol) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+
+                function checkResult() {
+                    let roundWon = false;
+                    for (let i = 0; i < winConditions.length; i++) {
+                        const winCondition = winConditions[i];
+                        const a = board[winCondition[0]];
+                        const b = board[winCondition[1]];
+                        const c = board[winCondition[2]];
+
+                        if (a === '' || b === '' || c === '') {
+                            continue;
+                        }
+                        if (a === b && b === c) {
+                            roundWon = true;
+                            break;
+                        }
+                    }
+
+                    if (roundWon) {
+                        messageElement.textContent = `Player ${currentPlayer} has won!`;
+                        gameActive = false;
+                        console.log(`Tic-Tac-Toe: Player ${currentPlayer} won.`);
+                        return;
+                    }
+
+                    const roundDraw = !board.includes('');
+                    if (roundDraw) {
+                        messageElement.textContent = 'It\'s a draw!';
+                        gameActive = false;
+                        console.log("Tic-Tac-Toe: It's a draw.");
+                        return;
+                    }
+
+                    currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                    messageElement.textContent = `Player ${currentPlayer}'s turn`;
+
+                    // If it's AI's turn and game is active
+                    if (gameActive && isVsComputer && currentPlayer === AI_PLAYER) {
+                         setTimeout(makeComputerMove, 500); // Small delay for AI move
+                    }
+                }
+
+                function resetTicTacToeGame() {
+                    console.log("Tic-Tac-Toe reset.");
+                    board = ['', '', '', '', '', '', '', '', ''];
+                    currentPlayer = 'X';
+                    gameActive = true;
+                    messageElement.textContent = `Player ${currentPlayer}'s turn`;
+                    cells.forEach(cell => {
+                        cell.textContent = '';
+                        cell.classList.remove('x', 'o');
+                    });
+                    // If AI starts (e.g., if AI were 'X', or if X wins and next round O starts automatically)
+                    // Currently, AI is 'O', so it waits for player 'X'.
+                }
+
+                // Attach event listeners
+                cells.forEach(cell => cell.addEventListener('click', handleCellClick));
+                resetButton.addEventListener('click', resetTicTacToeGame);
+                const closeHandler = () => {
+                    console.log("Tic-Tac-Toe close button clicked.");
+                    showModalCallback('Tic-Tac-Toe closed.', false);
+                    cleanupGameCallback();
+                };
+                closeButton.addEventListener('click', closeHandler);
+
+                // Add cleanup for event listeners
+                gameCleanupFunctions.push(() => {
+                    cells.forEach(cell => cell.removeEventListener('click', handleCellClick));
+                    resetButton.removeEventListener('click', resetTicTacToeGame);
+                    closeButton.removeEventListener('click', closeHandler);
+                    console.log("Tic-Tac-Toe event listeners removed during cleanup.");
+                });
+            }
+
+            // --- Snake Game ---
+            function initSnakeGame(container, showModalCallback, cleanupGameCallback) {
+                console.log("Initializing Snake Game.");
+                cleanupGameCallback();
+                container.innerHTML = `
+                    <h3 class="text-xl font-bold text-center mb-4">Snake Game</h3>
+                    <canvas id="snakeCanvas" width="400" height="400" class="game-canvas"></canvas>
+                    <p id="snakeScore" class="game-score">Score: 0</p>
+                    <p id="snakeMessage" class="game-message"></p>
+                    <div class="game-controls">
+                        <button id="snakeStartBtn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 shadow-md">Start Game</button>
+                        <button id="snakeCloseBtn" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 shadow-md">Close Game</button>
+                    </div>
+                `;
+
+                const canvas = container.querySelector('#snakeCanvas');
+                const ctx = canvas.getContext('2d');
+                const scoreDisplay = container.querySelector('#snakeScore');
+                const messageDisplay = container.querySelector('#snakeMessage');
+                const startBtn = container.querySelector('#snakeStartBtn');
+                const closeBtn = container.querySelector('#snakeCloseBtn');
+
+
+                const gridSize = 20;
+                let snake = [{x: 10, y: 10}];
+                let food = {};
+                let dx = 0;
+                let dy = 0;
+                let score = 0;
+                let gameRunning = false;
+                let changingDirection = false;
+                let gameLoopTimeoutId = null; // To store timeout ID
+
+                function generateFood() {
+                    food = {
+                        x: Math.floor(Math.random() * (canvas.width / gridSize)),
+                        y: Math.floor(Math.random() * (canvas.height / gridSize))
+                    };
+                    // Ensure food doesn't spawn on snake
+                    for (let i = 0; i < snake.length; i++) {
+                        if (snake[i].x === food.x && snake[i].y === food.y) {
+                            generateFood(); // Recalculate if on snake
+                            break;
+                        }
+                    }
+                }
+
+                function draw() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
+
+                    // Draw grid
+                    ctx.strokeStyle = '#374151'; // Darker gray for grid lines
+                    ctx.lineWidth = 0.5;
+                    for (let i = 0; i <= canvas.width; i += gridSize) {
+                        ctx.beginPath();
+                        ctx.moveTo(i, 0);
+                        ctx.lineTo(i, canvas.height);
+                        ctx.stroke();
+                    }
+                    for (let i = 0; i <= canvas.height; i += gridSize) {
+                        ctx.beginPath();
+                        ctx.moveTo(0, i);
+                        ctx.lineTo(canvas.width, i);
+                        ctx.stroke();
+                    }
+
+                    // Draw snake body
+                    ctx.fillStyle = '#4ade80'; // Green-400
+                    ctx.strokeStyle = '#22c55e'; // Green-500
+                    snake.forEach(segment => {
+                        ctx.fillRect(segment.x * gridSize, segment.y * gridSize, gridSize, gridSize);
+                        ctx.strokeRect(segment.x * gridSize, segment.y * gridSize, gridSize, gridSize);
+                    });
+
+                    // Draw snake head with eyes and mouth
+                    const head = snake[0];
+                    ctx.fillStyle = '#22c55e'; // Darker green for head
+                    ctx.fillRect(head.x * gridSize, head.y * gridSize, gridSize, gridSize);
+                    ctx.strokeRect(head.x * gridSize, head.y * gridSize, gridSize, gridSize);
+
+                    // Draw eyes
+                    ctx.fillStyle = 'white';
+                    ctx.beginPath();
+                    ctx.arc(head.x * gridSize + gridSize * 0.25, head.y * gridSize + gridSize * 0.25, gridSize * 0.1, 0, Math.PI * 2); // Left eye
+                    ctx.arc(head.x * gridSize + gridSize * 0.75, head.y * gridSize + gridSize * 0.25, gridSize * 0.1, 0, Math.PI * 2); // Right eye
+                    ctx.fill();
+                    ctx.fillStyle = 'black';
+                    ctx.beginPath();
+                    ctx.arc(head.x * gridSize + gridSize * 0.25, head.y * gridSize + gridSize * 0.25, gridSize * 0.05, 0, Math.PI * 2); // Left pupil
+                    ctx.arc(head.x * gridSize + gridSize * 0.75, head.y * gridSize + gridSize * 0.25, gridSize * 0.05, 0, Math.PI * 2); // Right pupil
+                    ctx.fill();
+
+                    // Draw mouth (simple smiling arc)
+                    ctx.strokeStyle = 'black';
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.arc(head.x * gridSize + gridSize / 2, head.y * gridSize + gridSize * 0.6, gridSize * 0.2, 0, Math.PI); // Smiling mouth
+                    ctx.stroke();
+
+                    // Draw food
+                    ctx.fillStyle = '#facc15'; // Yellow-500
+                    ctx.strokeStyle = '#eab308'; // Yellow-600
+                    ctx.beginPath();
+                    ctx.arc((food.x * gridSize) + gridSize / 2, (food.y * gridSize) + gridSize / 2, gridSize / 2, 0, 2 * Math.PI);
+                    ctx.fill();
+                    ctx.stroke();
+                }
+
+                function advanceSnake() {
+                    if (!gameRunning) return;
+
+                    const head = {x: snake[0].x + dx, y: snake[0].y + dy};
+                    snake.unshift(head);
+                    changingDirection = false; // Allow direction change after movement
+
+                    const didEatFood = head.x === food.x && head.y === food.y;
+                    if (didEatFood) {
+                        score += 10;
+                        scoreDisplay.textContent = `Score: ${score}`;
+                        generateFood();
+                    } else {
+                        snake.pop(); // Remove tail if no food eaten
+                    }
+                }
+
+                function checkCollision() {
+                    // Check if snake hits itself
+                    for (let i = 4; i < snake.length; i++) {
+                        if (snake[i].x === snake[0].x && snake[i].y === snake[0].y) return true;
+                    }
+                    // Check if snake hits walls
+                    const hitLeftWall = snake[0].x < 0;
+                    const hitRightWall = snake[0].x * gridSize >= canvas.width;
+                    const hitTopWall = snake[0].y < 0;
+                    const hitBottomWall = snake[0].y * gridSize >= canvas.height;
+
+                    return hitLeftWall || hitRightWall || hitTopWall || hitBottomWall;
+                }
+
+                function main() {
+                    if (gameLoopTimeoutId) { // Clear previous timeout before setting new one
+                        clearTimeout(gameLoopTimeoutId);
+                    }
+                    if (checkCollision()) {
+                        gameRunning = false;
+                        messageDisplay.textContent = `Game Over! Your score: ${score}`;
+                        return;
+                    }
+                    gameLoopTimeoutId = setTimeout(function onTick() {
+                        advanceSnake();
+                        draw();
+                        main();
+                    }, 100); // Game speed
+                }
+
+                function changeDirection(event) {
+                    if (changingDirection || !gameRunning) return; // Prevent rapid direction changes or if game not running
+                    changingDirection = true;
+
+                    const keyPressed = event.keyCode;
+                    const LEFT_KEY = 37;
+                    const RIGHT_KEY = 39;
+                    const UP_KEY = 38;
+                    const DOWN_KEY = 40;
+
+                    const goingUp = dy === -1;
+                    const goingDown = dy === 1;
+                    const goingRight = dx === 1;
+                    const goingLeft = dx === -1;
+
+                    if (keyPressed === LEFT_KEY && !goingRight) { dx = -1; dy = 0; }
+                    else if (keyPressed === UP_KEY && !goingDown) { dx = 0; dy = -1; }
+                    else if (keyPressed === RIGHT_KEY && !goingLeft) { dx = 1; dy = 0; }
+                    else if (keyPressed === DOWN_KEY && !goingUp) { dx = 0; dy = 1; }
+                }
+                
+                // Add touch controls for mobile
+                let touchStartX = 0;
+                let touchStartY = 0;
+
+                function handleTouchStart(e) {
+                    const firstTouch = e.touches[0];
+                    touchStartX = firstTouch.clientX;
+                    touchStartY = firstTouch.clientY;
+                }
+
+                function handleTouchMove(e) {
+                    if (changingDirection || !gameRunning) return;
+                    if (!touchStartX && !touchStartY) return; // Only process if touch started
+
+                    const currentX = e.touches[0].clientX;
+                    const currentY = e.touches[0].clientY;
+
+                    const diffX = touchStartX - currentX;
+                    const diffY = touchStartY - currentY;
+
+                    const minSwipeDistance = 10; // Minimum distance for a swipe to be registered
+
+                    if (Math.abs(diffX) > Math.abs(diffY)) { // Horizontal swipe
+                        if (Math.abs(diffX) > minSwipeDistance) {
+                            if (diffX > 0 && dx !== 1) { // Swiped left
+                                dx = -1; dy = 0;
+                            } else if (diffX < 0 && dx !== -1) { // Swiped right
+                                dx = 1; dy = 0;
+                            }
+                            changingDirection = true;
+                        }
+                    } else { // Vertical swipe
+                        if (Math.abs(diffY) > minSwipeDistance) {
+                            if (diffY > 0 && dy !== 1) { // Swiped up
+                                dx = 0; dy = -1;
+                            } else if (diffY < 0 && dy !== -1) { // Swiped down
+                                dx = 0; dy = 1;
+                            }
+                            changingDirection = true;
+                        }
+                    }
+                    // Reset touch coordinates after processing a potential swipe
+                    touchStartX = 0;
+                    touchStartY = 0;
+                }
+
+                function startGame() {
+                    console.log("Snake Game started.");
+                    if (gameRunning) return;
+                    gameRunning = true;
+                    snake = [{x: 10, y: 10}];
+                    dx = 1; dy = 0; // Initial direction (moving right)
+                    score = 0;
+                    scoreDisplay.textContent = 'Score: 0';
+                    messageDisplay.textContent = '';
+                    changingDirection = false;
+                    generateFood();
+                    main();
+                }
+
+                startBtn.addEventListener('click', startGame);
+                document.addEventListener('keydown', changeDirection);
+                canvas.addEventListener('touchstart', handleTouchStart, false);
+                canvas.addEventListener('touchmove', handleTouchMove, false);
+                const closeHandler = () => {
+                    console.log("Snake Game close button clicked.");
+                    showModalCallback('Snake Game closed.', false);
+                    cleanupGameCallback();
+                };
+                closeBtn.addEventListener('click', closeHandler);
+
+                // Add cleanup function for this game
+                gameCleanupFunctions.push(() => {
+                    if (gameLoopTimeoutId) {
+                        clearTimeout(gameLoopTimeoutId);
+                        gameLoopTimeoutId = null;
+                    }
+                    document.removeEventListener('keydown', changeDirection);
+                    canvas.removeEventListener('touchstart', handleTouchStart);
+                    canvas.removeEventListener('touchmove', handleTouchMove);
+                    startBtn.removeEventListener('click', startGame);
+                    closeBtn.removeEventListener('click', closeHandler);
+                    console.log("Snake Game event listeners removed during cleanup.");
+                });
+                draw(); // Initial draw for static game state
+            }
+
+            // --- Dinosaur Game ---
+            function initDinosaurGame(container, showModalCallback, cleanupGameCallback) {
+                console.log("Initializing Dinosaur Game.");
+                cleanupGameCallback();
+                container.innerHTML = `
+                    <h3 class="text-xl font-bold text-center mb-4">Dinosaur Game</h3>
+                    <canvas id="dinosaurCanvas" width="600" height="150" class="game-canvas"></canvas>
+                    <p id="dinosaurScore" class="game-score">Score: 0</p>
+                    <p id="dinosaurMessage" class="game-message"></p>
+                    <div class="game-controls">
+                        <button id="dinosaurStartBtn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 shadow-md">Start Game</button>
+                        <button id="dinosaurCloseBtn" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 shadow-md">Close Game</button>
+                    </div>
+                    <div class="text-center text-gray-400 mt-4">
+                        <p><strong>Controls:</strong></p>
+                        <p>Press <strong>SPACEBAR</strong> or <strong>click/tap the canvas</strong> to Jump.</p>
+                    </div>
+                `;
+
+                const canvas = container.querySelector('#dinosaurCanvas');
+                const ctx = canvas.getContext('2d');
+                const scoreDisplay = container.querySelector('#dinosaurScore');
+                const messageDisplay = container.querySelector('#dinosaurMessage');
+                const startBtn = container.querySelector('#dinosaurStartBtn');
+                const closeBtn = container.querySelector('#dinosaurCloseBtn');
+
+
+                let dino = { x: 50, y: 0, width: 20, height: 30, dy: 0, gravity: 0.8, jumpPower: 12, onGround: true }; 
+                let obstacles = [];
+                let gameSpeed = 3;
+                let score = 0;
+                let gameFrame = 0;
+                let gameRunning = false;
+                let currentAnimationFrameId = null; // For this specific game's animation frame
+
+                const groundY = canvas.height - 20;
+
+                function drawDino() {
+                    ctx.fillStyle = '#3b82f6'; // Blue-500 for body
+                    ctx.fillRect(dino.x, groundY - dino.height - dino.y, dino.width, dino.height);
+
+                    // Draw eyes
+                    ctx.fillStyle = 'white';
+                    ctx.beginPath();
+                    ctx.arc(dino.x + dino.width * 0.25, groundY - dino.height - dino.y + dino.height * 0.25, dino.width * 0.1, 0, Math.PI * 2); // Left eye
+                    ctx.arc(dino.x + dino.width * 0.75, groundY - dino.height - dino.y + dino.height * 0.25, dino.width * 0.1, 0, Math.PI * 2); // Right eye
+                    ctx.fill();
+                    ctx.fillStyle = 'black';
+                    ctx.beginPath();
+                    ctx.arc(dino.x + dino.width * 0.25, groundY - dino.height - dino.y + dino.height * 0.25, dino.width * 0.05, 0, Math.PI * 2); // Left pupil
+                    ctx.arc(dino.x + dino.width * 0.75, groundY - dino.height - dino.y + dino.height * 0.25, dino.width * 0.05, 0, Math.PI * 2); // Right pupil
+                    ctx.fill();
+
+                    // Draw mouth (simple smiling arc)
+                    ctx.strokeStyle = 'black';
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.arc(dino.x + dino.width / 2, groundY - dino.height - dino.y + dino.height * 0.7, dino.width * 0.2, 0, Math.PI); // Smiling mouth
+                    ctx.stroke();
+
+                    // Draw hands (simple small rectangles)
+                    ctx.fillStyle = '#3b82f6'; // Same color as body
+                    // Left arm/hand
+                    ctx.fillRect(dino.x - 5, groundY - dino.height - dino.y + dino.height * 0.5, 8, 5);
+                    // Right arm/hand
+                    ctx.fillRect(dino.x + dino.width - 3, groundY - dino.height - dino.y + dino.height * 0.5, 8, 5);
+                }
+
+                function drawObstacles() {
+                    ctx.fillStyle = '#ef4444'; // Red-500
+                    obstacles.forEach(obs => {
+                        ctx.fillRect(obs.x, groundY - obs.height, obs.width, obs.height);
+                    });
+                }
+
+                function update() {
+                    if (!gameRunning) {
+                        // Only draw if not running to show initial state, but don't update physics
+                        drawDino();
+                        drawObstacles();
+                        currentAnimationFrameId = requestAnimationFrame(update);
+                        return;
+                    }
+
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    gameFrame++;
+                    score = Math.floor(gameFrame / 10);
+                    scoreDisplay.textContent = `Score: ${score}`;
+
+                    // Apply gravity to vertical velocity
+                    dino.dy -= dino.gravity; 
+                    // Update vertical position based on vertical velocity
+                    dino.y += dino.dy;
+                    
+                    // Check for ground collision and adjust state
+                    if (dino.y < 0) {
+                        dino.y = 0; // Clamp dino to the ground
+                        dino.dy = 0; // Stop vertical movement
+                        dino.onGround = true; // Dino is now on the ground
+                    } else {
+                        dino.onGround = false; // Dino is airborne
+                    }
+
+                    // Generate obstacles
+                    if (gameFrame % 150 === 0) { // Spawn every X frames
+                        obstacles.push({
+                            x: canvas.width,
+                            width: Math.random() * 15 + 15,
+                            height: Math.random() * 20 + 20
+                        });
+                    }
+
+                    // Update obstacles and remove old ones
+                    for (let i = 0; i < obstacles.length; i++) {
+                        obstacles[i].x -= gameSpeed;
+                        // Collision detection (Axis-Aligned Bounding Box - AABB)
+                        if (dino.x < obstacles[i].x + obstacles[i].width && // Dino's left edge is to the left of obstacle's right edge
+                            dino.x + dino.width > obstacles[i].x &&         // Dino's right edge is to the right of obstacle's left edge
+                            groundY - dino.height - dino.y < groundY - obstacles[i].height && // Dino's head is above obstacle's top
+                            groundY - dino.y > groundY - obstacles[i].height) { // Dino's feet are below obstacle's top
+                            
+                            gameRunning = false; // Game Over
+                            messageDisplay.textContent = `Game Over! Score: ${score}`;
+                            return;
+                        }
+                    }
+                    obstacles = obstacles.filter(obs => obs.x + obs.width > 0);
+
+                    drawDino();
+                    drawObstacles();
+
+                    currentAnimationFrameId = requestAnimationFrame(update);
+                }
+
+                function jump() {
+                    console.log("Jump function called. Dino onGround:", dino.onGround, "Game Running:", gameRunning);
+                    if (dino.onGround && gameRunning) {
+                        dino.dy = dino.jumpPower;
+                        dino.onGround = false;
+                        console.log("Dino jumped! New dy:", dino.dy);
+                    } else {
+                        console.log("Dino cannot jump: not on ground or game not running.");
+                    }
+                }
+
+                function startGame() {
+                    console.log("Dinosaur Game started.");
+                    if (gameRunning) return; // Prevent starting multiple times
+                    gameRunning = true;
+                    dino = { x: 50, y: 0, width: 20, height: 30, dy: 0, gravity: 0.8, jumpPower: 12, onGround: true }; // Reset dino state
+                    obstacles = [];
+                    gameSpeed = 3;
+                    score = 0;
+                    gameFrame = 0;
+                    scoreDisplay.textContent = 'Score: 0';
+                    messageDisplay.textContent = '';
+                    
+                    if (currentAnimationFrameId) {
+                        cancelAnimationFrame(currentAnimationFrameId);
+                    }
+                    currentAnimationFrameId = requestAnimationFrame(update);
+                }
+
+                // Initial draw to show game elements
+                drawDino();
+                drawObstacles();
+                
+                // Event listeners
+                const keydownHandler = (e) => {
+                    console.log("Keydown event:", e.code);
+                    if (e.code === 'Space' || e.key === ' ') {
+                        e.preventDefault(); // Prevent page scroll
+                        jump();
+                    }
+                };
+                const clickHandler = () => {
+                    console.log("Canvas click/touch event.");
+                    jump(); // For touch/mouse click to jump
+                };
+
+                startBtn.addEventListener('click', startGame);
+                document.addEventListener('keydown', keydownHandler);
+                canvas.addEventListener('click', clickHandler); // Simple click anywhere on canvas to jump
+                canvas.addEventListener('touchstart', clickHandler, false); // For mobile touch
+                const closeHandler = () => {
+                    console.log("Dinosaur Game close button clicked.");
+                    showModalCallback('Dinosaur Game closed.', false);
+                    cleanupGameCallback();
+                };
+                closeBtn.addEventListener('click', closeHandler);
+
+
+                // Add cleanup function for this game
+                gameCleanupFunctions.push(() => {
+                    if (currentAnimationFrameId) {
+                        cancelAnimationFrame(currentAnimationFrameId); // Stop the animation loop
+                        currentAnimationFrameId = null;
+                    }
+                    document.removeEventListener('keydown', keydownHandler);
+                    canvas.removeEventListener('click', clickHandler);
+                    canvas.removeEventListener('touchstart', clickHandler);
+                    startBtn.removeEventListener('click', startGame);
+                    closeBtn.removeEventListener('click', closeHandler);
+                    console.log("Dinosaur Game event listeners removed during cleanup.");
+                });
+                drawDino(); // Initial draw for static game state
+                drawObstacles(); // Initial draw for static game state
+            }
+
+            // Expose game initialization functions globally so buttons can call them
+            window.initTicTacToeGame = initTicTacToeGame;
+            window.initSnakeGame = initSnakeGame;
+            window.initDinosaurGame = initDinosaurGame;
+            window.cleanupActiveGame = cleanupActiveGame; // Expose for game close buttons
+
         });
     </script>
 
